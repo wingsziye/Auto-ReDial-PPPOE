@@ -1,0 +1,93 @@
+﻿<Controls:MetroWindow x:Class="MetroAutoDialNet4.MainWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                      Title="AutoDial Ver 1.0"
+                      Height="350"
+                      ShowIconOnTitleBar="True"
+                      GlowBrush="{DynamicResource AccentColorBrush}"
+                      WindowStartupLocation="CenterScreen"
+                      SaveWindowPosition="True"
+                      x:Name="mainwindow"
+                      Width="525" Loaded="MetroWindow_Loaded">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Icons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    
+    <Controls:MetroWindow.RightWindowCommands>
+        <Controls:WindowCommands>            
+            <Button>
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconEntypo Kind="Github" Height="24" Width="24" />
+                    <TextBlock Margin="4 0 0 0" VerticalAlignment="Center" Text="嘿嘿" />
+                </StackPanel>
+            </Button>
+
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
+    <Grid>
+        <DockPanel>
+            <UniformGrid DockPanel.Dock="Top" Margin="3">                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock  Grid.Column="0" Text="活动连接:" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                    <!--<TextBox Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center"></TextBox>-->
+                    <ComboBox x:Name="cmb_linklist" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" Grid.Column="1" Margin="3" SelectedIndex="0" SelectionChanged="cmb_linklist_SelectionChanged">
+                        <ComboBoxItem x:Name="cmbi_manulinput">
+                            <DockPanel VerticalAlignment="Center">
+                                <TextBlock x:Name="tbk_manulinput" DockPanel.Dock="Left" Text="手动输入名称:" Margin="0,0,3,0" VerticalAlignment="Center"></TextBlock>
+                                <TextBox x:Name="tbx_manulinput" VerticalAlignment="Center" MinWidth="{Binding ActualWidth,ElementName=tbk_manulinput}" TextChanged="tbx_manulinput_TextChanged"></TextBox>
+                            </DockPanel>
+                        </ComboBoxItem>
+                    </ComboBox>
+                </Grid>
+                <Grid VerticalAlignment="Center">                    
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="0.5*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock  Grid.Column="0" Text="扫描间隔:" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+
+                    <TextBox Controls:TextBoxHelper.ClearTextButton="True" x:Name="tbx_interval" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Text="5000" TextChanged="tbx_interval_TextChanged">
+                        
+                    </TextBox>
+                    <TextBlock Grid.Column="2" Text="毫秒" VerticalAlignment="Center" HorizontalAlignment="Center" ></TextBlock>
+                </Grid>
+                <UniformGrid VerticalAlignment="Center" HorizontalAlignment="Stretch" Rows="1">
+                    <Button Margin="3" x:Name="btn_flashMsg" VerticalAlignment="Center" Click="btn_flashMsg_Click">刷新</Button>
+                    <Button Margin="3" x:Name="btn_dial" VerticalAlignment="Center" Click="btn_dial_Click">拨号</Button>
+                </UniformGrid>
+                <UniformGrid VerticalAlignment="Center" HorizontalAlignment="Stretch" Rows="1">
+                    <Button Margin="3" x:Name="btn_startListen" VerticalAlignment="Center" Click="btn_startListen_Click">开始监听</Button>
+                    <Button Margin="3" x:Name="btn_stopListen" VerticalAlignment="Center" Click="btn_stopListen_Click">停止监听</Button>
+                </UniformGrid>
+            </UniformGrid>
+
+            <ListView x:Name="lv_msgview">
+                <ListView.View>
+                    <GridView x:Name="gv_msgview">
+                        <GridView.Columns>
+                            <GridViewColumn x:Name="gvc_no1" Header="No." DisplayMemberBinding="{Binding Path=Numbers}"></GridViewColumn>
+                            <GridViewColumn x:Name="gvc_msg1" Width="{Binding Width,ElementName=mainwindow}" Header="Message" DisplayMemberBinding="{Binding Path=Message}"></GridViewColumn>
+                        </GridView.Columns>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            
+                   
+        </DockPanel>
+        
+
+    </Grid>
+</Controls:MetroWindow>
