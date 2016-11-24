@@ -3,6 +3,8 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                      xmlns:local="clr-namespace:MetroAutoDialNet4"
+                      xmlns:forms="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
                       Title="AutoDial Ver 1.0"
                       Height="350"
                       ShowIconOnTitleBar="True"
@@ -10,7 +12,7 @@
                       WindowStartupLocation="CenterScreen"
                       SaveWindowPosition="True"
                       x:Name="mainwindow"
-                      Width="525" Loaded="MetroWindow_Loaded">
+                      Width="525" Loaded="MetroWindow_Loaded" StateChanged="mainwindow_StateChanged">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -22,7 +24,7 @@
     
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>            
-            <Button>
+            <Button x:Name="btn_iconBtn" Click="btn_iconBtn_Click">
                 <StackPanel Orientation="Horizontal">
                     <iconPacks:PackIconEntypo Kind="Github" Height="24" Width="24" />
                     <TextBlock Margin="4 0 0 0" VerticalAlignment="Center" Text="嘿嘿" />
@@ -32,6 +34,13 @@
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
     <Grid>
+        <local:NotificationAreaIcon Text="想看看状态？" x:Name="notificationIcon" MouseDoubleClick="NotificationAreaIcon_MouseDoubleClick" >
+            <local:NotificationAreaIcon.Icon>
+                <ImageSource>Resources/sysmonitor.ico</ImageSource>
+            </local:NotificationAreaIcon.Icon>
+        </local:NotificationAreaIcon>
+
+
         <DockPanel>
             <UniformGrid DockPanel.Dock="Top" Margin="3">                
                 <Grid>

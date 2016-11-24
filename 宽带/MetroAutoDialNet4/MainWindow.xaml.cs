@@ -16,6 +16,7 @@ using System.ComponentModel;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace MetroAutoDialNet4
 {
@@ -24,10 +25,45 @@ namespace MetroAutoDialNet4
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
+
         public MainWindow()
         {
             InitializeComponent();
         }
+
+        #region 最小化到右下角
+
+        /// <summary>
+        /// 托盘小图标的双击事件--最小化的状态下双击还原
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NotificationAreaIcon_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            //Console.WriteLine(this.WindowState);
+            if (this.WindowState == WindowState.Minimized)
+            {
+                this.Show();
+                WindowState = WindowState.Normal;
+            }
+        }
+
+
+        private void mainwindow_StateChanged(object sender, EventArgs e)
+        {
+            //Console.WriteLine(this.WindowState);
+            if (this.WindowState == WindowState.Normal || this.WindowState == WindowState.Maximized)
+            {
+                //this.Show();
+            }
+            else if (this.WindowState == WindowState.Minimized)
+            {
+                this.Hide();
+            }
+        }
+        #endregion
+
+        #region 拨号控制
         ObservableCollection<UserMessage> UserMessageList;
         DialManager dialManager;
         ComboBoxItem cmbi_default;
@@ -69,12 +105,18 @@ namespace MetroAutoDialNet4
             dialManager.DialgLostConnection += DialManager_DialgLostConnection;
             dialManager.StopListenen += DialManager_StopListenen;
             cmbi_default = cmb_linklist.Items[0] as ComboBoxItem;
+
+            #region 最小化到右下角
+            //notificationIcon.Icon = new BitmapImage(new Uri("Resource\\system_monitor.png", UriKind.RelativeOrAbsolute));
+            this.ShowInTaskbar = false;//启动后不现实任务栏图标！
+            #endregion
+
         }
 
         private void DialManager_StopListenen(string obj)
         {
             this.Dispatcher.BeginInvoke(new Action(() => {
-                InputMessage(obj);                
+                InputMessage(obj);
             }));
         }
 
@@ -83,7 +125,7 @@ namespace MetroAutoDialNet4
             this.Dispatcher.BeginInvoke(new Action(() => {
                 InputMessage(obj);
                 invokeDial();
-                InputMessage("重连\""+SelDialName+"\"完成");
+                InputMessage("重连\"" + SelDialName + "\"完成");
             }));
         }
 
@@ -164,12 +206,12 @@ namespace MetroAutoDialNet4
         private void invokeDial()
         {
             InputMessage("正在尝试对 \"" + SelDialName + "\" 进行拨号...");
-            
+
             dialManager.Diag(SelDialName);
         }
 
         private void btn_dial_Click(object sender, RoutedEventArgs e)
-        {            
+        {
             if (SelDialName != "" && SelDialName != null)
             {
                 dialManager.Diag(SelDialName);
@@ -199,14 +241,14 @@ namespace MetroAutoDialNet4
         {
             ComboBox a = sender as ComboBox;
             if (a.SelectedIndex == 0)
-            {                
+            {
                 SelDialName = tbx_manulinput.Text;
                 InputMessage("已选择手动输入...");
             }
             else if (a.SelectedIndex > 0)
             {
                 SelDialName = a.Items[a.SelectedIndex].ToString();
-                InputMessage("已选择 \""+ "\""+ SelDialName);
+                InputMessage("已选择 \"" + "\"" + SelDialName);
             }
         }
 
@@ -223,8 +265,8 @@ namespace MetroAutoDialNet4
             var t = (TextBox)sender;
             string text = t.Text;
             int a = 5000;
-            if (text!=string.Empty)
-            {                
+            if (text != string.Empty)
+            {
                 try
                 {
                     a = int.Parse(text);
@@ -237,8 +279,41 @@ namespace MetroAutoDialNet4
             }
             IntervalSecond = a;
         }
+
+        #endregion
+
+        private async void btn_iconBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var controller = await this.ShowProgressAsync("哈哈，你发现了这只喵~", "稍等几秒会自己消失....\n                      ——by 梓夜");
+
+            await waitProgress(controller);
+            
+        }
+
+        private async Task waitProgress(ProgressDialogController controller)
+        {
+            await Task.Run(async () =>
+            {
+               
+                for (int i = 0; i < 120; i++)
+                {
+                    await Task.Delay(20);
+                    if (i==40)
+                    {
+                        controller.SetMessage("哈哈~\n                      ——by 梓夜");
+                    }
+                    else if (i==80)
+                    {
+                        controller.SetMessage("再见!\n                      ——by 梓夜");
+                    }
+                }
+            });
+            //controller.Maximum = 100;
+            await controller.CloseAsync();
+        }
     }
 
+    #region 显示数据
     public class UserMessage : INotifyPropertyChanged
     {
         int numbers;
@@ -282,4 +357,6 @@ namespace MetroAutoDialNet4
             }
         }
     }
+    #endregion
+
 }

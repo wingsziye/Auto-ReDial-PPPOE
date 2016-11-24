@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{2642BE9A-E4E0-4716-8B9E-837C63038988}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MetroAutoDialNet4</RootNamespace>
     <AssemblyName>MetroAutoDialNet4</AssemblyName>
@@ -54,6 +54,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.2.4.0\lib\net40\System.Windows.Interactivity.dll</HintPath>
       <Private>True</Private>
@@ -76,6 +78,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DialManager.cs" />
+    <Compile Include="NotificationAreaIcon.cs" />
     <Compile Include="tbk_maohao_tbx.xaml.cs">
       <DependentUpon>tbk_maohao_tbx.xaml</DependentUpon>
     </Compile>
@@ -136,6 +139,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Entypo-license.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\system_monitor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\sysmonitor.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
