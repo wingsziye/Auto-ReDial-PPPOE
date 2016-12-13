@@ -133,7 +133,19 @@ namespace MetroAutoDialNet4
         {
             if (UserMessageList != null)
             {
-                if (UserMessageList.Count > 0)
+                if (UserMessageList.Count > 1000)//发现BUG，有一回网线断了，然后不停重连，导致列表太长，界面会卡死。
+                {
+                    UserMessageList.Clear();
+                }
+                else if (UserMessageList.Count > 350)//临时解决方案，最好的方法是检测是否频繁断线
+                {
+                    //当消息太多时，自动降低扫描速度为1分钟一次
+                    btn_stopListen_Click(null, null);
+                    IntervalSecond = 60000;
+                    tbx_interval.Text = IntervalSecond.ToString();
+                    btn_startListen_Click(null, null);
+                }
+                else if (UserMessageList.Count > 0)
                 {
                     if (UserMessageList[UserMessageList.Count - 1].Numbers != UserMessageList.Count)
                     {
